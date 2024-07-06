@@ -1,0 +1,11 @@
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+dependencies {
+    implementation "com.food.ordering.system:order-application-service:${project.version}"
+}

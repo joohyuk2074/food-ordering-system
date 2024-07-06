@@ -1,19 +1,21 @@
 plugins {
+    id 'java'
     id 'org.springframework.boot' version '3.3.1'
     id 'io.spring.dependency-management' version '1.1.5'
+//    id 'com.vanniktech.dependency.graph.generator' version '0.8.0'
 }
 
-group = 'com.food.ordering.system'
-version = '0.0.1-SNAPSHOT'
-
-//repositories {
-//    mavenCentral()
-//}
-
 allprojects {
+    group = 'com.food.ordering.system'
+    version = '0.0.1-SNAPSHOT'
+
     repositories {
         mavenCentral()
     }
+}
+
+bootJar {
+    enabled = false
 }
 
 subprojects {
@@ -28,7 +30,6 @@ subprojects {
     }
 
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     }
@@ -37,3 +38,24 @@ subprojects {
         useJUnitPlatform()
     }
 }
+
+project(':order-service') {
+    dependencies {
+//        implementation project(':common')
+        implementation "com.food.ordering.system:order-domain-core:${project.version}"
+        implementation "com.food.ordering.system:order-application-service:${project.version}"
+        implementation "com.food.ordering.system:order-application:${project.version}"
+        implementation "com.food.ordering.system:order-dataaccess:${project.version}"
+        implementation "com.food.ordering.system:order-messaging:${project.version}"
+//        implementation "com.food.ordering.system:common-domain:${project.version}"
+    }
+}
+//
+//
+//dependencyGraphGenerator {
+//    generators {
+//        html {
+//            outputDirectory = layout.buildDirectory.dir("reports/dependency-graph").get().asFile
+//        }
+//    }
+//}
