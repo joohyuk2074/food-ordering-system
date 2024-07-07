@@ -22,3 +22,7 @@ findProject(':order-service:order-messaging')?.name = 'order-messaging'
 
 include 'order-service:order-container'
 findProject(':order-service:order-container')?.name = 'order-container'
+include 'common'
+include 'common:common-domain'
+findProject(':common:common-domain')?.name = 'common-domain'
+

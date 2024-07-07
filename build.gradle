@@ -47,6 +47,7 @@ project(':order-service') {
         implementation "com.food.ordering.system:order-application:${project.version}"
         implementation "com.food.ordering.system:order-dataaccess:${project.version}"
         implementation "com.food.ordering.system:order-messaging:${project.version}"
+        implementation "com.food.ordering.system:common-domain:${project.version}"
 //        implementation "com.food.ordering.system:common-domain:${project.version}"
     }
 }
