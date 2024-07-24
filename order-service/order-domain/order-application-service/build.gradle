@@ -8,4 +8,7 @@ jar {
 
 dependencies {
     implementation "com.food.ordering.system:order-domain-core"
+    implementation "com.food.ordering.system:common-domain"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-tx"
 }
