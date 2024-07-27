@@ -1,14 +1,18 @@
 package com.food.ordering.system.order.service.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import com.food.ordering.system.domain.valueobject.CustomerId;
 import com.food.ordering.system.domain.valueobject.Money;
 import com.food.ordering.system.domain.valueobject.OrderId;
+import com.food.ordering.system.domain.valueobject.OrderStatus;
 import com.food.ordering.system.domain.valueobject.ProductId;
 import com.food.ordering.system.domain.valueobject.RestaurantId;
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderCommand;
+import com.food.ordering.system.order.service.domain.dto.create.CreateOrderResponse;
 import com.food.ordering.system.order.service.domain.dto.create.OrderAddress;
 import com.food.ordering.system.order.service.domain.dto.create.OrderItem;
 import com.food.ordering.system.order.service.domain.entity.Customer;
@@ -25,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,5 +154,48 @@ class OrderApplicationServiceTest {
         when(restaurantRepository.findRestaurantInformation(orderDataMapper.createOrderCommandToRestaurant(createOrderCommand)))
             .thenReturn(Optional.of(restaurantResponse));
         when(orderRepository.save(any(Order.class))).thenReturn(order);
+    }
+
+    @Test
+    void testCreateOrder() {
+        // when
+        CreateOrderResponse createOrderResponse = orderApplicationService.createOrder(createOrderCommand);
+
+        // then
+        assertThat(createOrderResponse.getOrderStatus()).isEqualTo(OrderStatus.PENDING);
+        assertThat(createOrderResponse.getMessage()).isEqualTo("Order created successfully");
+        assertThat(createOrderResponse.getOrderTrackingId()).isNotNull();
+    }
+
+    @Test
+    void testCreateOrderWithWrongTotalPrice() {
+        assertThatThrownBy(() -> orderApplicationService.createOrder(createOrderCommandWrongPrice))
+            .hasMessageContaining("Total price: 250.00 is not equal to Order items total: 200.00!");
+    }
+
+    @Test
+    void testCreateOrderWithWrongProductPrice() {
+        assertThatThrownBy(() -> orderApplicationService.createOrder(createOrderCommandWrongProductPrice))
+            .hasMessageContaining("Order item price: 60.00 is not valid for product " + PRODUCT_ID);
+    }
+
+    @Test
+    void testCreateOrderWithPassiveRestaurant() {
+        // given
+        Restaurant restaurantResponse = Restaurant.builder()
+            .restaurantId(new RestaurantId(createOrderCommand.getRestaurantId()))
+            .products(List.of(
+                new Product(new ProductId(PRODUCT_ID), "product-1", new Money(new BigDecimal("50.00"))),
+                new Product(new ProductId(PRODUCT_ID), "product-2", new Money(new BigDecimal("50.00")))))
+            .active(false)
+            .build();
+
+        // when
+        when(restaurantRepository.findRestaurantInformation(orderDataMapper.createOrderCommandToRestaurant(createOrderCommand)))
+            .thenReturn(Optional.of(restaurantResponse));
+
+        // then
+        assertThatThrownBy(() -> orderApplicationService.createOrder(createOrderCommand))
+            .hasMessageContaining("Restaurant with id " + RESTAURANT_ID + " is currently not active!");
     }
 }
