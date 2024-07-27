@@ -10,5 +10,6 @@ dependencies {
     implementation "com.food.ordering.system:order-domain-core"
     implementation "com.food.ordering.system:common-domain"
     implementation "org.springframework.boot:spring-boot-starter-validation"
-    implementation "org.springframework.boot:spring-tx"
+    // https://mvnrepository.com/artifact/org.springframework/spring-tx
+    implementation 'org.springframework:spring-tx:6.1.11'
 }
