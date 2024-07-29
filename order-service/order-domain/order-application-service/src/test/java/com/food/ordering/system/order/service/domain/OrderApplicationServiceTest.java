@@ -163,7 +163,7 @@ class OrderApplicationServiceTest {
 
         // then
         assertThat(createOrderResponse.getOrderStatus()).isEqualTo(OrderStatus.PENDING);
-        assertThat(createOrderResponse.getMessage()).isEqualTo("Order created successfully");
+        assertThat(createOrderResponse.getMessage()).isEqualTo("Order Created Successfully");
         assertThat(createOrderResponse.getOrderTrackingId()).isNotNull();
     }
 

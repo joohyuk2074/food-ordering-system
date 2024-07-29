@@ -7,5 +7,5 @@ jar {
 }
 
 dependencies {
-    implementation "com.food.ordering.system:common-domain"
+    implementation project(':common:common-domain')
 }

@@ -7,9 +7,9 @@ jar {
 }
 
 dependencies {
-    implementation 'com.food.ordering.system:order-domain-core'
-    implementation 'com.food.ordering.system:order-application-service'
-    implementation 'com.food.ordering.system:order-application'
-    implementation 'com.food.ordering.system:order-dataaccess'
-    implementation 'com.food.ordering.system:order-messaging'
+    implementation project(':order-service:order-domain:order-domain-core')
+    implementation project(':order-service:order-domain:order-application-service')
+    implementation project(':order-service:order-application')
+    implementation project(':order-service:order-dataaccess')
+    implementation project(':order-service:order-messaging')
 }
