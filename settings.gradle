@@ -15,4 +15,5 @@ include 'order-service:order-dataaccess'
 include 'order-service:order-messaging'
 
 include 'order-service:order-container'
+include 'infrastructure'
 
