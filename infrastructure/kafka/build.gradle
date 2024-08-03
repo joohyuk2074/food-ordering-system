@@ -1,0 +1,18 @@
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+ext['kafka.version'] = '3.5.0'
+ext['spring-kafka.version'] = '3.2.2'
+
+dependencies {
+//    implementation 'org.springframework.kafka:spring-kafka:2.8.2'
+//    implementation 'io.confluent.kafka-avro-serializer:7.0.1'
+    implementation 'org.springframework.kafka:spring-kafka'
+//    implementation 'org.apache.kafka:kafka-streams' // optional - only needed when using kafka-streams
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+}

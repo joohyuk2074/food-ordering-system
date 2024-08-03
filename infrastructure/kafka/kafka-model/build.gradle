@@ -1,0 +1,37 @@
+plugins {
+    id 'com.github.davidmc24.gradle.plugin.avro' version '1.2.0' // 적절한 버전으로 변경
+}
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+    maven {
+        url "https://packages.confluent.io/maven"
+    }
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+dependencies {
+    implementation 'org.apache.avro:avro:1.11.3'
+}
+
+generateAvroJava {
+    source("src/main/resources/avro")
+    source("src/main/javac")
+    include("**/*.avsc")
+    outputDir = file("src/main/java")
+    stringType = "String"
+    enableDecimalLogicalType = true
+}
+
+avro {
+    fieldVisibility = "PRIVATE"
+    outputCharacterEncoding = "UTF-8"
+}
