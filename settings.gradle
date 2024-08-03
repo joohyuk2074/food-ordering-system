@@ -22,4 +22,6 @@ include 'infrastructure:kafka:kafka-producer'
 include 'infrastructure:kafka:kafka-consumer'
 include 'infrastructure:kafka:kafka-model'
 include 'infrastructure:kafka:kafka-config-data'
+include 'common:common-application'
+findProject(':common:common-application')?.name = 'common-application'
 
