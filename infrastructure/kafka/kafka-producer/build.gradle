@@ -5,3 +5,18 @@ bootJar {
 jar {
     enabled = true
 }
+
+dependencies {
+    implementation project(":common:common-domain")
+
+    implementation project(":infrastructure:kafka:kafka-model")
+    implementation project(":infrastructure:kafka:kafka-config-data")
+
+    implementation project(":order-service:order-domain:order-domain-core")
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'io.confluent:kafka-avro-serializer'
+    implementation 'org.apache.avro:avro:1.11.0' // 사용하고자 하는 Avro 버전을 명시
+}
