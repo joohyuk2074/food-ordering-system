@@ -33,7 +33,7 @@ subprojects {
 //        implementation project(':infrastructure:kafka:kafka-consumer')
 //        implementation project(':infrastructure:kafka:kafka-model')
 //        implementation project(':infrastructure:kafka:kafka-config-data')
-//
+
         implementation 'org.springframework.boot:spring-boot-starter-logging'
 
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
