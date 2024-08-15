@@ -20,5 +20,7 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'org.apache.kafka:kafka-streams'
 
+    implementation 'org.apache.avro:avro:1.11.3'
+
     testImplementation 'org.springframework.kafka:spring-kafka-test'
 }

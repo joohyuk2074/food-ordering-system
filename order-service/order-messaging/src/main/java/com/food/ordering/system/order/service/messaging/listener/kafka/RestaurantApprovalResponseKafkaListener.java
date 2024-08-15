@@ -1,9 +1,10 @@
 package com.food.ordering.system.order.service.messaging.listener.kafka;
 
+import static com.food.ordering.system.kafka.order.avro.model.OrderApprovalStatus.*;
 import static com.food.ordering.system.order.service.domain.entity.Order.FAILURE_MESSAGE_DELIMITER;
 
-import com.food.ordering.system.domain.valueobject.OrderApprovalStatus;
 import com.food.ordering.system.kafka.consumer.KafkaConsumer;
+import com.food.ordering.system.kafka.order.avro.model.OrderApprovalStatus;
 import com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel;
 import com.food.ordering.system.order.service.domain.dto.message.RestaurantApprovalResponse;
 import com.food.ordering.system.order.service.domain.ports.input.message.listener.restaurantapproval.RestaurantApprovalResponseMessageListener;
@@ -50,13 +51,13 @@ public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<Re
         );
 
         messages.forEach(restaurantApprovalResponseAvroModel -> {
-            if (OrderApprovalStatus.APPROVED == restaurantApprovalResponseAvroModel.getOrderApprovalStatus()) {
+            if (APPROVED == restaurantApprovalResponseAvroModel.getOrderApprovalStatus()) {
                 log.info("Processing approved order for order id: {}",
                     restaurantApprovalResponseAvroModel.getOrderId());
                 RestaurantApprovalResponse restaurantApprovalResponse = orderMessagingDataMapper
                     .approvalResponseAvroModelToApprovalResponse(restaurantApprovalResponseAvroModel);
                 restaurantApprovalResponseMessageListener.orderApproved(restaurantApprovalResponse);
-            } else if (OrderApprovalStatus.REJECTED == restaurantApprovalResponseAvroModel.getOrderApprovalStatus()) {
+            } else if (REJECTED == restaurantApprovalResponseAvroModel.getOrderApprovalStatus()) {
                 log.info("Processing rejected order for order id: {}, with failure messages: {} ",
                     restaurantApprovalResponseAvroModel.getOrderId(),
                     String.join(FAILURE_MESSAGE_DELIMITER, restaurantApprovalResponseAvroModel.getFailureMessages())

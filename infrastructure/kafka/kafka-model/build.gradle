@@ -24,7 +24,6 @@ dependencies {
 
 generateAvroJava {
     source("src/main/resources/avro")
-    source("src/main/javac")
     include("**/*.avsc")
     outputDir = file("src/main/java")
     stringType = "String"
