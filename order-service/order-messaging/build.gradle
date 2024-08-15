@@ -7,7 +7,7 @@ jar {
 }
 
 dependencies {
-    implementation project(':common:common-domain')
+    implementation project(':common')
 
     implementation project(':order-service:order-domain:order-domain-core')
     implementation project(':order-service:order-domain:order-application-service')

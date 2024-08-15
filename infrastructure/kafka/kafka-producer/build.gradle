@@ -7,7 +7,7 @@ jar {
 }
 
 dependencies {
-    implementation project(":common:common-domain")
+    implementation project(":common")
 
     implementation project(":infrastructure:kafka:kafka-model")
     implementation project(":infrastructure:kafka:kafka-config-data")
