@@ -1,11 +1,11 @@
 package com.food.ordering.system.order.service.domain.entity;
 
-import com.food.ordering.system.domain.entity.AggregateRoot;
-import com.food.ordering.system.domain.valueobject.CustomerId;
-import com.food.ordering.system.domain.valueobject.Money;
-import com.food.ordering.system.domain.valueobject.OrderId;
-import com.food.ordering.system.domain.valueobject.OrderStatus;
-import com.food.ordering.system.domain.valueobject.RestaurantId;
+import com.food.ordering.system.application.handler.domain.entity.AggregateRoot;
+import com.food.ordering.system.application.handler.domain.valueobject.CustomerId;
+import com.food.ordering.system.application.handler.domain.valueobject.Money;
+import com.food.ordering.system.application.handler.domain.valueobject.OrderId;
+import com.food.ordering.system.application.handler.domain.valueobject.OrderStatus;
+import com.food.ordering.system.application.handler.domain.valueobject.RestaurantId;
 import com.food.ordering.system.order.service.domain.exception.OrderDomainException;
 import com.food.ordering.system.order.service.domain.valueobject.OrderItemId;
 import com.food.ordering.system.order.service.domain.valueobject.StreetAddress;

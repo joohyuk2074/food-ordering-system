@@ -1,10 +1,10 @@
 package com.food.ordering.system.order.service.dataaccess.order.mapper;
 
-import com.food.ordering.system.domain.valueobject.CustomerId;
-import com.food.ordering.system.domain.valueobject.Money;
-import com.food.ordering.system.domain.valueobject.OrderId;
-import com.food.ordering.system.domain.valueobject.ProductId;
-import com.food.ordering.system.domain.valueobject.RestaurantId;
+import com.food.ordering.system.application.handler.domain.valueobject.CustomerId;
+import com.food.ordering.system.application.handler.domain.valueobject.Money;
+import com.food.ordering.system.application.handler.domain.valueobject.OrderId;
+import com.food.ordering.system.application.handler.domain.valueobject.ProductId;
+import com.food.ordering.system.application.handler.domain.valueobject.RestaurantId;
 import com.food.ordering.system.order.service.dataaccess.order.entity.OrderAddressEntity;
 import com.food.ordering.system.order.service.dataaccess.order.entity.OrderEntity;
 import com.food.ordering.system.order.service.dataaccess.order.entity.OrderItemEntity;

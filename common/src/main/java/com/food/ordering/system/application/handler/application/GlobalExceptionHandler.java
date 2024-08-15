@@ -1,6 +1,5 @@
 package com.food.ordering.system.application.handler.application;
 
-import com.food.ordering.system.application.handler.ErrorDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ValidationException;

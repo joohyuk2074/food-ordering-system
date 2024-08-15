@@ -1,6 +1,7 @@
 package com.food.ordering.system.order.service.messaging.kafka;
 
-import static com.food.ordering.system.kafka.order.avro.model.OrderApprovalStatus.*;
+import static com.food.ordering.system.kafka.order.avro.model.OrderApprovalStatus.APPROVED;
+import static com.food.ordering.system.kafka.order.avro.model.OrderApprovalStatus.REJECTED;
 import static com.food.ordering.system.order.service.domain.entity.Order.FAILURE_MESSAGE_DELIMITER;
 
 import com.food.ordering.system.kafka.consumer.KafkaConsumer;
