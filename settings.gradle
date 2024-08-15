@@ -3,9 +3,9 @@ rootProject.name = 'food-ordering-system'
 include 'common'
 
 include 'order-service'
+include 'customer-service'
+include 'payment-service'
 
 include 'infrastructure'
 include 'infrastructure:kafka'
-
-include 'customer-service'
 
