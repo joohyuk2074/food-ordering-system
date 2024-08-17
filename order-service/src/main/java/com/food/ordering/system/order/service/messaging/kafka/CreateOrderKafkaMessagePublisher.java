@@ -1,12 +1,15 @@
 package com.food.ordering.system.order.service.messaging.kafka;
 
 import com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel;
+import com.food.ordering.system.kafka.producer.KafkaMessageHelper;
 import com.food.ordering.system.kafka.producer.service.KafkaProducer;
 import com.food.ordering.system.order.service.domain.config.OrderServiceConfigData;
 import com.food.ordering.system.order.service.domain.event.OrderCreatedEvent;
 import com.food.ordering.system.order.service.domain.ports.output.message.publisher.payment.OrderCreatedPaymentRequestMessagePublisher;
 import com.food.ordering.system.order.service.messaging.mapper.OrderMessagingDataMapper;
+import java.util.function.BiConsumer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -16,38 +19,41 @@ public class CreateOrderKafkaMessagePublisher implements OrderCreatedPaymentRequ
     private final OrderMessagingDataMapper orderMessagingDataMapper;
     private final OrderServiceConfigData orderServiceConfigData;
     private final KafkaProducer<String, PaymentRequestAvroModel> kafkaProducer;
-    private final OrderKafkaMessageHelper orderKafkaMessageHelper;
+    private final KafkaMessageHelper kafkaMessageHelper;
 
     public CreateOrderKafkaMessagePublisher(
         OrderMessagingDataMapper orderMessagingDataMapper,
         OrderServiceConfigData orderServiceConfigData,
         KafkaProducer<String, PaymentRequestAvroModel> kafkaProducer,
-        OrderKafkaMessageHelper orderKafkaMessageHelper
+        KafkaMessageHelper kafkaMessageHelper
     ) {
         this.orderMessagingDataMapper = orderMessagingDataMapper;
         this.orderServiceConfigData = orderServiceConfigData;
         this.kafkaProducer = kafkaProducer;
-        this.orderKafkaMessageHelper = orderKafkaMessageHelper;
+        this.kafkaMessageHelper = kafkaMessageHelper;
     }
 
     @Override
     public void publish(OrderCreatedEvent domainEvent) {
         String orderId = domainEvent.getOrder().getId().getValue().toString();
+
         log.info("Received OrderCreatedEvent for order id: {}", orderId);
 
         try {
             PaymentRequestAvroModel paymentRequestAvroModel = orderMessagingDataMapper
                 .orderCreatedEventToPaymentRequestAvroModel(domainEvent);
 
+            BiConsumer<SendResult<String, PaymentRequestAvroModel>, Throwable> kafkaCallback = kafkaMessageHelper.getKafkaCallback(
+                orderServiceConfigData.getPaymentResponseTopicName(),
+                paymentRequestAvroModel,
+                orderId
+            );
+
             kafkaProducer.send(
                 orderServiceConfigData.getPaymentRequestTopicName(),
                 orderId,
                 paymentRequestAvroModel,
-                orderKafkaMessageHelper.getKafkaCallback(
-                    orderServiceConfigData.getPaymentResponseTopicName(),
-                    paymentRequestAvroModel,
-                    orderId
-                )
+                kafkaCallback
             );
 
             log.info("PaymentRequestAvroModel sent to Kafka for order id: {}", paymentRequestAvroModel.getOrderId());

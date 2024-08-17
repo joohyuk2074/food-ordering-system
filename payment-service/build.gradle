@@ -8,9 +8,13 @@ jar {
 
 dependencies {
     implementation project(":common")
+    implementation project(":infrastructure:kafka")
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     implementation 'org.postgresql:postgresql:42.7.3'
+
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.apache.avro:avro:1.11.0' // 사용하고자 하는 Avro 버전을 명시
 }

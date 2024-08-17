@@ -1,4 +1,4 @@
-package com.food.ordering.system.order.service.messaging.kafka;
+package com.food.ordering.system.kafka.producer;
 
 import java.util.function.BiConsumer;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class OrderKafkaMessageHelper {
+public class KafkaMessageHelper {
 
     public <T> BiConsumer<SendResult<String, T>, Throwable> getKafkaCallback(
         String topicName,
