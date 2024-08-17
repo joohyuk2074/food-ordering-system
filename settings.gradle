@@ -5,6 +5,7 @@ include 'common'
 include 'order-service'
 include 'customer-service'
 include 'payment-service'
+include 'restaurant-service'
 
 include 'infrastructure'
 include 'infrastructure:kafka'
