@@ -40,7 +40,7 @@ public class CreateOrderKafkaMessagePublisher implements OrderCreatedPaymentRequ
                 .orderCreatedEventToPaymentRequestAvroModel(domainEvent);
 
             kafkaProducer.send(
-                orderServiceConfigData.getPaymentRequestToTopicName(),
+                orderServiceConfigData.getPaymentRequestTopicName(),
                 orderId,
                 paymentRequestAvroModel,
                 orderKafkaMessageHelper.getKafkaCallback(
