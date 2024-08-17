@@ -1,9 +1,9 @@
 package com.food.ordering.system.restaurant.service.domain.entity;
 
-import com.food.ordering.system.application.handler.domain.entity.BaseEntity;
-import com.food.ordering.system.application.handler.domain.valueobject.Money;
-import com.food.ordering.system.application.handler.domain.valueobject.OrderId;
-import com.food.ordering.system.application.handler.domain.valueobject.OrderStatus;
+import com.food.ordering.system.domain.entity.BaseEntity;
+import com.food.ordering.system.domain.valueobject.Money;
+import com.food.ordering.system.domain.valueobject.OrderId;
+import com.food.ordering.system.domain.valueobject.OrderStatus;
 import java.util.List;
 
 public class OrderDetail extends BaseEntity<OrderId> {

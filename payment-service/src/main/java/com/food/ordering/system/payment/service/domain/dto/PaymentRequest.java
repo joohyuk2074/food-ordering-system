@@ -1,6 +1,6 @@
 package com.food.ordering.system.payment.service.domain.dto;
 
-import com.food.ordering.system.application.handler.domain.valueobject.PaymentOrderStatus;
+import com.food.ordering.system.domain.valueobject.PaymentOrderStatus;
 import java.math.BigDecimal;
 import java.time.Instant;
 import lombok.AllArgsConstructor;

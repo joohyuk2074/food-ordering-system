@@ -1,10 +1,10 @@
 package com.food.ordering.system.payment.service;
 
-import static com.food.ordering.system.application.handler.domain.DomainConstants.UTC;
+import static com.food.ordering.system.domain.DomainConstants.UTC;
 
-import com.food.ordering.system.application.handler.domain.event.publisher.DomainEventPublisher;
-import com.food.ordering.system.application.handler.domain.valueobject.Money;
-import com.food.ordering.system.application.handler.domain.valueobject.PaymentStatus;
+import com.food.ordering.system.domain.event.publisher.DomainEventPublisher;
+import com.food.ordering.system.domain.valueobject.Money;
+import com.food.ordering.system.domain.valueobject.PaymentStatus;
 import com.food.ordering.system.payment.service.domain.PaymentDomainService;
 import com.food.ordering.system.payment.service.domain.entity.CreditEntry;
 import com.food.ordering.system.payment.service.domain.entity.CreditHistory;

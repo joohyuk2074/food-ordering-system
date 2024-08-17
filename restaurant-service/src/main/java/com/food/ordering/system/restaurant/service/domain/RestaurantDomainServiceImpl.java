@@ -1,9 +1,9 @@
 package com.food.ordering.system.restaurant.service.domain;
 
-import static com.food.ordering.system.application.handler.domain.DomainConstants.UTC;
+import static com.food.ordering.system.domain.DomainConstants.UTC;
 
-import com.food.ordering.system.application.handler.domain.event.publisher.DomainEventPublisher;
-import com.food.ordering.system.application.handler.domain.valueobject.OrderApprovalStatus;
+import com.food.ordering.system.domain.event.publisher.DomainEventPublisher;
+import com.food.ordering.system.domain.valueobject.OrderApprovalStatus;
 import com.food.ordering.system.restaurant.service.domain.entity.Restaurant;
 import com.food.ordering.system.restaurant.service.domain.event.OrderApprovalEvent;
 import com.food.ordering.system.restaurant.service.domain.event.OrderApprovedEvent;
