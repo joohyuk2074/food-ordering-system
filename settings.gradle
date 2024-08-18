@@ -9,4 +9,6 @@ include 'restaurant-service'
 
 include 'infrastructure'
 include 'infrastructure:kafka'
+include 'infrastructure:saga'
+findProject(':infrastructure:saga')?.name = 'saga'
 
