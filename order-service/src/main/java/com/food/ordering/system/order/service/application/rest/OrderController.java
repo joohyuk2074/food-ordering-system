@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/orders", produces = "application/vnd.api.v1+_json")
+@RequestMapping(value = "/orders")
 public class OrderController {
 
     private final OrderApplicationService orderApplicationService;
@@ -38,9 +38,9 @@ public class OrderController {
     }
 
     @GetMapping("/{trackingId}")
-    public ResponseEntity<TrackOrderResponse> getOrderByTrackingId(@PathVariable UUID trackingId) {
+    public ResponseEntity<TrackOrderResponse> getOrderByTrackingId(@PathVariable("trackingId") String trackingId) {
         TrackOrderResponse trackOrderResponse
-            = orderApplicationService.trackOrder(TrackOrderQuery.builder().orderTrackingId(trackingId).build());
+            = orderApplicationService.trackOrder(TrackOrderQuery.builder().orderTrackingId(UUID.fromString(trackingId)).build());
         log.info("Returning order status with tracking id: {}", trackOrderResponse.getOrderTrackingId());
         return ResponseEntity.ok(trackOrderResponse);
     }

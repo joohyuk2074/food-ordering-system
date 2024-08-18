@@ -7,24 +7,26 @@ import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class CreateOrderCommand {
 
     @NotNull
-    private final UUID customerId;
+    private UUID customerId;
 
     @NotNull
-    private final UUID restaurantId;
+    private UUID restaurantId;
 
     @NotNull
-    private final BigDecimal price;
+    private BigDecimal price;
 
     @NotNull
-    private final List<OrderItem> items;
+    private List<OrderItem> items;
 
     @NotNull
-    private final OrderAddress address;
+    private OrderAddress address;
 }

@@ -1,3 +1,15 @@
+plugins {
+    id 'com.github.davidmc24.gradle.plugin.avro' version '1.2.0' // 적절한 버전으로 변경
+}
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+    maven {
+        url "https://packages.confluent.io/maven"
+    }
+}
+
 bootJar {
     enabled = false
 }
@@ -17,5 +29,6 @@ dependencies {
 
     implementation 'org.postgresql:postgresql:42.7.3'
 
-    implementation 'org.apache.avro:avro:1.11.0' // kafka messaging 직렬화 모듈
+    implementation 'org.apache.avro:avro:1.12.0'
+    implementation 'io.confluent:kafka-avro-serializer:7.7.0'
 }
