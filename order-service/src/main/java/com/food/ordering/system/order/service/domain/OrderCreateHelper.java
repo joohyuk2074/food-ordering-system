@@ -30,22 +30,18 @@ public class OrderCreateHelper {
 
     private final OrderDataMapper orderDataMapper;
 
-    private final OrderCreatedPaymentRequestMessagePublisher orderCreatedPaymentRequestMessagePublisher;
-
     public OrderCreateHelper(
         OrderDomainService orderDomainService,
         OrderRepository orderRepository,
         CustomerRepository customerRepository,
         RestaurantRepository restaurantRepository,
-        OrderDataMapper orderDataMapper,
-        OrderCreatedPaymentRequestMessagePublisher orderCreatedPaymentRequestMessagePublisher
+        OrderDataMapper orderDataMapper
     ) {
         this.orderDomainService = orderDomainService;
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.restaurantRepository = restaurantRepository;
         this.orderDataMapper = orderDataMapper;
-        this.orderCreatedPaymentRequestMessagePublisher = orderCreatedPaymentRequestMessagePublisher;
     }
 
     @Transactional
@@ -54,11 +50,7 @@ public class OrderCreateHelper {
 
         Order order = orderDataMapper.createOrderCommandToOrder(createOrderCommand);
         Restaurant restaurant = checkRestaurant(createOrderCommand);
-        OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitiateOrder(
-            order,
-            restaurant,
-            orderCreatedPaymentRequestMessagePublisher
-        );
+        OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitiateOrder(order, restaurant);
 
         saveOrder(order);
 
