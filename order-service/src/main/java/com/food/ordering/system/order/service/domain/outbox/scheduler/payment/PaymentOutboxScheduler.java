@@ -20,7 +20,10 @@ public class PaymentOutboxScheduler implements OutboxScheduler {
     private final PaymentOutboxHelper paymentOutboxHelper;
     private final PaymentRequestMessagePublisher paymentRequestMessagePublisher;
 
-    public PaymentOutboxScheduler(PaymentOutboxHelper paymentOutboxHelper, PaymentRequestMessagePublisher paymentRequestMessagePublisher) {
+    public PaymentOutboxScheduler(
+        PaymentOutboxHelper paymentOutboxHelper,
+        PaymentRequestMessagePublisher paymentRequestMessagePublisher
+    ) {
         this.paymentOutboxHelper = paymentOutboxHelper;
         this.paymentRequestMessagePublisher = paymentRequestMessagePublisher;
     }
@@ -47,9 +50,8 @@ public class PaymentOutboxScheduler implements OutboxScheduler {
                     .collect(Collectors.joining(","))
             );
 
-            outboxMessages.forEach(outboxMessage -> {
-                paymentRequestMessagePublisher.publish(outboxMessage, this::updateOutboxStatus);
-            });
+            outboxMessages.forEach(outboxMessage ->
+                paymentRequestMessagePublisher.publish(outboxMessage, this::updateOutboxStatus));
 
             log.info("{} OrderPaymentOutboxMessage sent to message bus!", outboxMessages.size());
         }
