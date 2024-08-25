@@ -1,4 +1,4 @@
-package com.food.ordering.system.order.service.messaging.kafka;
+package com.food.ordering.system.order.service.messaging.listener.kafka;
 
 import static com.food.ordering.system.kafka.order.avro.model.OrderApprovalStatus.APPROVED;
 import static com.food.ordering.system.kafka.order.avro.model.OrderApprovalStatus.REJECTED;

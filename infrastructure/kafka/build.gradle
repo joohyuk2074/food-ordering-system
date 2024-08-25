@@ -23,6 +23,7 @@ ext['spring-kafka.version'] = '3.2.2'
 
 dependencies {
     implementation project(":common")
+    implementation project(":infrastructure:outbox")
 //    implementation project(":order-service")
 
     implementation 'org.springframework.boot:spring-boot-starter'

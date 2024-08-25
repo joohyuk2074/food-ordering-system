@@ -15,7 +15,9 @@ import com.food.ordering.system.order.service.domain.entity.Order;
 import com.food.ordering.system.order.service.domain.event.OrderCancelledEvent;
 import com.food.ordering.system.order.service.domain.event.OrderCreatedEvent;
 import com.food.ordering.system.order.service.domain.event.OrderPaidEvent;
+import com.food.ordering.system.order.service.domain.outbox.model.payment.OrderPaymentEventPayload;
 import java.util.UUID;
+import org.hibernate.type.descriptor.jdbc.UUIDJdbcType;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -90,6 +92,21 @@ public class OrderMessagingDataMapper {
             .createdAt(approvalResponseAvroModel.getCreatedAt())
             .orderApprovalStatus(OrderApprovalStatus.valueOf(approvalResponseAvroModel.getOrderApprovalStatus().name()))
             .failureMessages(approvalResponseAvroModel.getFailureMessages())
+            .build();
+    }
+
+    public PaymentRequestAvroModel orderPaymentEventToPaymentRequestAvroModel(
+        String sagaId,
+        OrderPaymentEventPayload orderPaymentEventPayload
+    ) {
+        return PaymentRequestAvroModel.newBuilder()
+            .setId(UUID.randomUUID().toString())
+            .setSagaId(sagaId)
+            .setCustomerId(orderPaymentEventPayload.getCustomerId())
+            .setOrderId(orderPaymentEventPayload.getOrderId())
+            .setPrice(orderPaymentEventPayload.getPrice())
+            .setCreatedAt(orderPaymentEventPayload.getCreatedAt().toInstant())
+            .setPaymentOrderStatus(PaymentOrderStatus.valueOf(orderPaymentEventPayload.getPaymentOrderStatus()))
             .build();
     }
 }
