@@ -1,15 +1,31 @@
 package com.food.ordering.system.kafka.producer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.food.ordering.system.domain.exception.DomainException;
 import com.food.ordering.system.outbox.OutboxStatus;
 import java.util.function.BiConsumer;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class KafkaMessageHelper {
+
+    private final ObjectMapper objectMapper;
+
+    public <T> T getOrderEventPayload(String payload, Class<T> outputType) {
+        try {
+            return objectMapper.readValue(payload, outputType);
+        } catch (JsonProcessingException e) {
+            log.error("Could not read {} object!", outputType.getName(), e);
+            throw new DomainException("Could not read " + outputType.getName() + " object!", e);
+        }
+    }
 
     public <T, U> BiConsumer<SendResult<String, T>, Throwable> getKafkaCallback(
         String responseTopicName,
