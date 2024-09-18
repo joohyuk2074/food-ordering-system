@@ -1,11 +1,13 @@
 package com.food.ordering.system.payment.service.messaging.publisher.kafka;
 
-import com.food.ordering.system.domain.event.publisher.DomainEventPublisher;
 import com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel;
 import com.food.ordering.system.kafka.producer.KafkaMessageHelper;
 import com.food.ordering.system.kafka.producer.service.KafkaProducer;
+import com.food.ordering.system.outbox.OutboxStatus;
 import com.food.ordering.system.payment.service.domain.config.PaymentServiceConfigData;
-import com.food.ordering.system.payment.service.domain.event.PaymentFailedEvent;
+import com.food.ordering.system.payment.service.domain.outbox.model.OrderEventPayload;
+import com.food.ordering.system.payment.service.domain.outbox.model.OrderOutboxMessage;
+import com.food.ordering.system.payment.service.domain.ports.output.publisher.PaymentResponseMessagePublisher;
 import com.food.ordering.system.payment.service.messaging.mapper.PaymentMessagingDataMapper;
 import java.util.function.BiConsumer;
 import lombok.extern.slf4j.Slf4j;
@@ -14,14 +16,14 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class PaymentFailedKafkaMessagePublisher implements DomainEventPublisher<PaymentFailedEvent> {
+public class PaymentEventKafkaPublisher implements PaymentResponseMessagePublisher {
 
     private final PaymentMessagingDataMapper paymentMessagingDataMapper;
     private final KafkaProducer<String, PaymentResponseAvroModel> kafkaProducer;
     private final PaymentServiceConfigData paymentServiceConfigData;
     private final KafkaMessageHelper kafkaMessageHelper;
 
-    public PaymentFailedKafkaMessagePublisher(
+    public PaymentEventKafkaPublisher(
         PaymentMessagingDataMapper paymentMessagingDataMapper,
         KafkaProducer<String, PaymentResponseAvroModel> kafkaProducer,
         PaymentServiceConfigData paymentServiceConfigData,
@@ -34,32 +36,46 @@ public class PaymentFailedKafkaMessagePublisher implements DomainEventPublisher<
     }
 
     @Override
-    public void publish(PaymentFailedEvent domainEvent) {
-        String orderId = domainEvent.getPayment().getOrderId().getValue().toString();
+    public void publish(
+        OrderOutboxMessage orderOutboxMessage,
+        BiConsumer<OrderOutboxMessage, OutboxStatus> outboxCallback
+    ) {
+        OrderEventPayload orderEventPayload =
+            kafkaMessageHelper.getOrderEventPayload(orderOutboxMessage.getPayload(), OrderEventPayload.class);
 
-        log.info("Received PaymentCancelledEvent for order id: {}", orderId);
+        String sagaId = orderOutboxMessage.getSagaId().toString();
+
+        log.info("Received OrderOutboxMessage for order id: {} and saga id: {}",
+            orderEventPayload.getOrderId(),
+            sagaId
+        );
 
         try {
-            PaymentResponseAvroModel paymentResponseAvroModel
-                = paymentMessagingDataMapper.paymentFailedEventToPaymentResponseAvroModel(domainEvent);
+            PaymentResponseAvroModel paymentResponseAvroModel = paymentMessagingDataMapper
+                .orderEventPayloadToPaymentResponseAvroModel(sagaId, orderEventPayload);
 
             BiConsumer<SendResult<String, PaymentResponseAvroModel>, Throwable> kafkaCallback = kafkaMessageHelper.getKafkaCallback(
                 paymentServiceConfigData.getPaymentResponseTopicName(),
                 paymentResponseAvroModel,
-                orderId
+                orderOutboxMessage,
+                outboxCallback,
+                orderEventPayload.getOrderId(),
+                "PaymentResponseAvroModel"
             );
 
             kafkaProducer.send(
                 paymentServiceConfigData.getPaymentResponseTopicName(),
-                orderId,
+                sagaId,
                 paymentResponseAvroModel,
                 kafkaCallback
             );
 
-            log.info("PaymentResponseAvroModel sent to kafka for order id: {}", orderId);
+            log.info("PaymentResponseAvroModel sent to kafka for order id: {} and saga id: {}",
+                paymentResponseAvroModel.getOrderId(), sagaId);
         } catch (Exception e) {
-            log.info("Error while sending PaymentResponseAvroModel message"
-                + " to kafka with order id: {}, error: {}", orderId, e.getMessage());
+            log.error("Error while sending PaymentRequestAvroModel message" +
+                    " to kafka with order id: {} and saga id: {}, error: {}",
+                orderEventPayload.getOrderId(), sagaId, e.getMessage());
         }
     }
 }
