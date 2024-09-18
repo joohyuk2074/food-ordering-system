@@ -11,7 +11,7 @@ public interface OrderOutboxRepository {
 
     OrderOutboxMessage save(OrderOutboxMessage orderOutboxMessage);
 
-    Optional<List<OrderOutboxMessage>> findByTypeAndOutboxStatus(String type, String status);
+    Optional<List<OrderOutboxMessage>> findByTypeAndOutboxStatus(String type, OutboxStatus status);
 
     Optional<OrderOutboxMessage> findByTypeAndSagIdAndPaymentStatusAndOutboxStatus(
         String type,
@@ -20,5 +20,5 @@ public interface OrderOutboxRepository {
         OutboxStatus outboxStatus
     );
 
-    void deleteByTypeAndOutboxStatus(String type, String status);
+    void deleteByTypeAndOutboxStatus(String type, OutboxStatus status);
 }
