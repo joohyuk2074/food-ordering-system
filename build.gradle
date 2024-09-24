@@ -29,6 +29,7 @@ subprojects {
     }
 
     dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
         implementation 'org.springframework.boot:spring-boot-starter-logging'
 
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
